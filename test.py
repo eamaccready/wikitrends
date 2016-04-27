@@ -3,10 +3,30 @@ from json import load
 import pandas as pd
 import datetime
 
+#buliding URL:
 
-url='https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia.org/all-access/all-agents/Donald_Trump/daily/20130101/20160401'
+#article for which page views need to be extracted
+look_up=raw_text("Donald Trump")
+
+#dates between which page views need to be extracted in the format YYYYMMDD
+startdate="20130101"
+enddate="20160401"
+
+#request URL : https://wikimedia.org/api/rest_v1/?doc
+url='https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia.org/all-access/all-agents/'+look_up+'/daily/'+startdate+'/'+enddate
+
 response = urlopen(url) 
-json_obj = load(response) #-- loads the result into the python data object 
-j=pd.DataFrame(json_obj['items'])
-j['date']=pd.to_datetime(j["timestamp"],format="%Y%M%d00")
-print j[0:8]
+
+#parses the json response and creates a dictionary with key "list" and value of a  list of dictionaries where each dictionary is a day's page view data
+json_obj = load(response) 
+
+#extacting just the list of dictionaries and creating a data frame
+data=pd.DataFrame(json_obj['items'])
+
+#data cleaning begins
+
+#step 1 : manipulate the timestamp to create a date attribute
+data['date']=pd.to_datetime(data["timestamp"],format="%Y%M%d00")
+
+
+print data[0:8]
