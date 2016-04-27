@@ -6,7 +6,7 @@ import datetime
 #buliding URL:
 
 #article for which page views need to be extracted
-look_up=raw_text("Donald Trump")
+look_up="Donald_Trump"
 
 #dates between which page views need to be extracted in the format YYYYMMDD
 startdate="20130101"
